@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+data/
+.DS_Store
+*.db
+
+# 运行日志与打包产物
+cpolar.log*
+*.zip
+
+# Cloudflare Wrangler 本地状态
+deploy-cloudflare/.wrangler/
+deploy-node/.env

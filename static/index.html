@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日语声音克隆 · 声クローン</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="logo-mark">声</span>
+      <div>
+        <h1>日语声音克隆</h1>
+        <p class="sub">録音して声をクローン · Fish Audio × Coze</p>
+      </div>
+    </div>
+    <nav id="tabs">
+      <button class="tab active" data-tab="clone">① 克隆声音</button>
+      <button class="tab" data-tab="library">② 声音库</button>
+      <button class="tab" data-tab="tts">③ 语音合成</button>
+      <button class="tab" data-tab="plugin">④ 扣子插件</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ① 克隆声音 -->
+    <section id="tab-clone" class="panel active">
+      <div class="tips">
+        <strong>录音小贴士(克隆质量的关键):</strong>
+        <ul>
+          <li>至少 <b>10 秒</b>,建议 20~60 秒,越长越像</li>
+          <li>只有一个人说话,安静环境,无背景音乐</li>
+          <li>语速自然,音量和平时说话一致</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>🎙 录制声音</h2>
+        <div class="recorder">
+          <button id="btn-record" class="btn primary">开始录音</button>
+          <button id="btn-stop" class="btn" disabled>停止</button>
+          <button id="btn-check-mic" class="btn small">🔍 检查麦克风权限</button>
+          <span id="rec-timer" class="timer">00:00</span>
+          <div class="meter"><div id="meter-bar"></div></div>
+        </div>
+        <p id="mic-status" class="hint"></p>
+        <div id="rec-preview" class="hidden">
+          <audio id="rec-audio" controls></audio>
+          <span id="rec-info"></span>
+          <button id="btn-rerecord" class="btn small">重新录制</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📁 或上传音频文件</h2>
+        <p class="hint">支持 1~3 个文件(mp3 / wav / m4a / opus),每段 ≥10 秒</p>
+        <input type="file" id="file-input" accept="audio/*,.m4a,.opus" multiple />
+        <ul id="file-list"></ul>
+      </div>
+
+      <div class="card">
+        <h2>📝 命名并克隆</h2>
+        <div class="row">
+          <input type="text" id="voice-title" placeholder="声音名称,例如:私の声" />
+          <button id="btn-clone" class="btn primary">开始克隆</button>
+        </div>
+        <p id="clone-result" class="result hidden"></p>
+      </div>
+    </section>
+
+    <!-- ② 声音库 -->
+    <section id="tab-library" class="panel">
+      <div class="row space-between">
+        <h2>我的声音</h2>
+        <button id="btn-sync" class="btn small">↻ 与云端同步</button>
+      </div>
+      <table id="voice-table">
+        <thead>
+          <tr><th>名称</th><th>声音 ID</th><th>状态</th><th>时长</th><th>创建时间</th><th>操作</th></tr>
+        </thead>
+        <tbody id="voice-tbody"></tbody>
+      </table>
+      <p id="library-empty" class="hint hidden">还没有克隆过声音,去「① 克隆声音」创建第一个吧。</p>
+    </section>
+
+    <!-- ③ 语音合成 -->
+    <section id="tab-tts" class="panel">
+      <div class="card">
+        <div class="row">
+          <label>选择声音</label>
+          <select id="tts-voice"></select>
+        </div>
+        <label for="tts-text">日语文本(1000 字以内)</label>
+        <textarea id="tts-text" rows="4" placeholder="こんにちは、今日もいい天気ですね。"></textarea>
+        <div class="row">
+          <span id="tts-count" class="hint">0 / 1000</span>
+          <button id="btn-tts" class="btn primary">生成语音</button>
+        </div>
+      </div>
+      <div id="tts-result" class="card hidden">
+        <audio id="tts-audio" controls></audio>
+        <a id="tts-download" class="btn small" download>下载 mp3</a>
+      </div>
+    </section>
+
+    <!-- ④ 扣子插件 -->
+    <section id="tab-plugin" class="panel">
+      <div class="card">
+        <h2>把网站装进扣子(coze.cn)</h2>
+        <ol class="steps">
+          <li><b>让网站有公网 HTTPS 地址</b> —— 本机运行扣子访问不到,需要用内网穿透(推荐 cpolar,国内节点)或部署到服务器。<br/>
+            <code>cpolar http 8000</code> 拿到形如 <code>https://xxxx.cpolar.top</code> 的域名。
+          </li>
+          <li><b>配置域名并重启</b> —— 编辑项目里的 <code>.env</code>:<br/>
+            <code>PUBLIC_BASE_URL=https://xxxx.cpolar.top</code> 然后重启网站。
+          </li>
+          <li><b>下载插件包</b> —— 点击下方按钮,得到 <code>voice-tts-plugin.json</code>。
+          </li>
+          <li><b>导入扣子</b> —— 扣子 → 资源库 → +资源 → 插件 → 「导入插件」→ 上传这个 JSON,验证通过后点「试运行」输入日语文本测试。
+          </li>
+          <li><b>发布并使用</b> —— 发布插件 → 创建 Bot → 添加插件 → Bot 会调用 <code>synthesize</code> 工具合成语音,并把音频链接发给用户。</li>
+        </ol>
+        <div class="row">
+          <a href="/openapi-plugin.json" class="btn primary">⬇ 下载扣子插件包</a>
+          <a href="/openapi.json" target="_blank" class="btn small">预览插件定义</a>
+        </div>
+        <p class="hint">当前插件服务器地址:<span id="plugin-server"></span></p>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <div id="global-player" class="global-player"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

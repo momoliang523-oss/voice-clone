@@ -1,0 +1,12 @@
+{
+  "name": "voice-tts-public",
+  "version": "1.0.0",
+  "description": "日语语音合成公开版(零依赖,Node >= 18)",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,170 @@
+/* 日语声音克隆 - 和风简约样式 */
+:root {
+  --ink: #2b3440;
+  --paper: #faf7f2;
+  --card: #ffffff;
+  --accent: #b3452e;      /* 和风朱红 */
+  --accent-dark: #93331f;
+  --indigo: #2b3a67;      /* 蓝染 */
+  --line: #e5ded3;
+  --ok: #3f7d4e;
+  --warn: #b07d2b;
+  --bad: #b3452e;
+  --hint: #8a8378;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans", "Yu Gothic", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--indigo);
+  color: #fff;
+  padding: 1.2rem 2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo { display: flex; align-items: center; gap: 0.8rem; }
+.logo-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.6rem; height: 2.6rem;
+  background: var(--accent); color: #fff;
+  border-radius: 0.5rem; font-size: 1.5rem; font-weight: 700;
+}
+.logo h1 { font-size: 1.3rem; letter-spacing: 0.05em; }
+.logo .sub { font-size: 0.75rem; opacity: 0.75; }
+
+#tabs { display: flex; gap: 0.25rem; margin-left: auto; align-self: flex-end; }
+.tab {
+  background: transparent; border: none; color: #cfd6e6;
+  padding: 0.7rem 1.1rem; cursor: pointer; font-size: 0.95rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.tab:hover { background: rgba(255, 255, 255, 0.08); }
+.tab.active { background: var(--paper); color: var(--ink); font-weight: 600; }
+
+main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 0.75rem; padding: 1.2rem 1.4rem; margin-bottom: 1.1rem;
+}
+.card h2 { font-size: 1.05rem; margin-bottom: 0.9rem; }
+
+.tips {
+  background: #f3ede2; border: 1px solid #e2d8c5;
+  border-radius: 0.75rem; padding: 1rem 1.3rem; margin-bottom: 1.1rem;
+  font-size: 0.9rem; line-height: 1.7;
+}
+.tips ul { margin-left: 1.2rem; }
+
+.hint { color: var(--hint); font-size: 0.85rem; }
+.mono { font-family: "SF Mono", Menlo, monospace; font-size: 0.85rem; }
+.hidden { display: none !important; }
+
+.btn {
+  display: inline-block; background: #fff; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 0.5rem;
+  padding: 0.55rem 1.1rem; cursor: pointer; font-size: 0.9rem;
+  transition: filter 0.15s, transform 0.05s;
+  text-decoration: none;
+}
+.btn:hover:not(:disabled) { filter: brightness(0.96); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover:not(:disabled) { background: var(--accent-dark); }
+.btn.danger { color: var(--bad); border-color: #e6c4ba; }
+.btn.small { padding: 0.3rem 0.7rem; font-size: 0.82rem; }
+
+.row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+.space-between { justify-content: space-between; }
+
+.recorder { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+.timer { font-family: "SF Mono", Menlo, monospace; font-size: 1.1rem; min-width: 3.5rem; }
+.meter {
+  flex: 1; min-width: 120px; height: 0.55rem;
+  background: #eee7db; border-radius: 999px; overflow: hidden;
+}
+#meter-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #7fae63, #e0b13a, var(--accent));
+  transition: width 0.08s linear;
+}
+
+#rec-preview { margin-top: 0.9rem; display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+#rec-info { font-size: 0.85rem; color: var(--warn); }
+
+input[type="text"], select, textarea {
+  width: 100%; padding: 0.55rem 0.7rem; font-size: 0.95rem;
+  border: 1px solid var(--line); border-radius: 0.5rem; background: #fff;
+  color: var(--ink); font-family: inherit;
+}
+input[type="text"]:focus, select:focus, textarea:focus {
+  outline: 2px solid rgba(43, 58, 103, 0.25); border-color: var(--indigo);
+}
+input[type="file"] { font-size: 0.9rem; }
+#file-list { list-style: none; margin-top: 0.5rem; font-size: 0.85rem; color: var(--hint); }
+label { font-size: 0.9rem; font-weight: 600; display: block; margin: 0.5rem 0 0.3rem; }
+select { max-width: 30rem; }
+
+.result { margin-top: 0.8rem; font-size: 0.9rem; line-height: 1.6; }
+.result.ok { color: var(--ok); }
+.result.error { color: var(--bad); }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { color: var(--hint); font-weight: 600; font-size: 0.82rem; }
+.actions { display: flex; gap: 0.4rem; }
+
+.badge {
+  display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px;
+  font-size: 0.75rem; background: #f0ece4; color: var(--ink);
+}
+.badge.ok { background: #e3efe6; color: var(--ok); }
+.badge.warn { background: #f7eeda; color: var(--warn); }
+.badge.bad { background: #f6e2dc; color: var(--bad); }
+
+.steps { margin-left: 1.2rem; line-height: 1.9; font-size: 0.92rem; }
+.steps li { margin-bottom: 0.7rem; }
+code {
+  background: #f1ece2; border-radius: 0.3rem; padding: 0.1rem 0.4rem;
+  font-family: "SF Mono", Menlo, monospace; font-size: 0.85em;
+}
+
+audio { max-width: 100%; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 2rem; transform: translateX(-50%);
+  background: var(--indigo); color: #fff; padding: 0.7rem 1.3rem;
+  border-radius: 0.6rem; font-size: 0.9rem; z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  max-width: 90vw;
+}
+.toast.error { background: var(--bad); }
+
+.global-player {
+  position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 90;
+  background: #fff; border: 1px solid var(--line); border-radius: 0.6rem;
+  padding: 0.5rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex; flex-direction: column; gap: 0.3rem; align-items: flex-end;
+  font-size: 0.8rem; color: var(--hint);
+}
+.global-player:empty { display: none; }
+
+@media (max-width: 640px) {
+  header { padding: 1rem 1rem 0; }
+  #tabs { margin-left: 0; width: 100%; overflow-x: auto; }
+  .tab { white-space: nowrap; }
+  table { font-size: 0.8rem; }
+}
